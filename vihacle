@@ -1,0 +1,98 @@
+
+
+package com.vehicle;
+
+public class Car {
+    private double speedKph;
+    private float fuelLevel;
+    private int distanceTraveled;
+
+    public void setSpeed(double speed) {
+        this.speedKph = speed;
+    }
+
+    public void setFuelLevel(float fuel) {
+        this.fuelLevel = fuel;
+    }
+
+    public void drive(int distance) {
+        distanceTraveled += distance;
+        fuelLevel -= distance * 0.5 / 100; 
+        // Implicit conversion of distance to double
+    }
+
+    public double getSpeedMph() {
+        return speedKph * 0.621371; 
+        // Implicit conversion of speedKph to double
+    }
+
+    public int getDistanceKm() {
+        return distanceTraveled / 1000; 
+        // Implicit conversion of distanceTraveled to double
+    }
+
+    public int calculateRemainingFuel(double distance) {
+        double consumedFuel = distance * 0.5 / 100; 
+        // Implicit conversion of distance to double
+        return (int) ((fuelLevel - consumedFuel) * 100); 
+        // Explicit conversion to int
+    }
+}
+
+
+//ElectricCar.java:
+
+
+package com.vehicle;
+
+public class ElectricCar extends Car {
+    private double batteryLevel;
+
+    public void setBatteryLevel(double battery) {
+        this.batteryLevel = battery;
+    }
+
+    public double getBatteryLevel() {
+        return batteryLevel;
+    }
+
+    public void drive(int distance) {
+        super.drive(distance);
+        batteryLevel -= distance / 100;
+         // Implicit conversion of distance to double
+    }
+}
+
+//VehicleTest.java:
+
+
+package com.vehicle.test;
+
+import com.vehicle.Car;
+import com.vehicle.ElectricCar;
+
+public class VehicleTest {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.setSpeed(70);
+        car.setFuelLevel(56);
+
+        ElectricCar electricCar = new ElectricCar();
+        electricCar.setSpeed(70);
+        electricCar.setBatteryLevel(80);
+
+        car.drive(200000);
+        electricCar.drive(600000);
+
+        System.out.println("Car:");
+        System.out.println("Speed (MPH): " + car.getSpeedMph());
+        System.out.println("Distance (KM): " + car.getDistanceKm());
+        System.out.println("Remaining Fuel: " + car.calculateRemainingFuel(0));
+
+        System.out.println("\nElectric Car:");
+        System.out.println("Speed (MPH): " + electricCar.getSpeedMph());
+        System.out.println("Distance (KM): " + electricCar.getDistanceKm());
+        System.out.println("Remaining Battery: " + electricCar.getBatteryLevel());
+    }
+}
+
